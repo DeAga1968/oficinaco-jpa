@@ -1,0 +1,180 @@
+Script do Banco de Dados do Grupo Bennys Software.
+Alunos: Daniel Henrique, Douglas Marinho e Yuri de Paula
+
+
+
+-- public.categoria definition
+
+-- Drop table
+
+-- DROP TABLE public.categoria;
+
+CREATE TABLE public.categoria (
+	id serial4 NOT NULL,
+	nome varchar(255) NULL,
+	CONSTRAINT categoria_pkey PRIMARY KEY (id)
+);
+
+
+-- public.modelo definition
+
+-- Drop table
+
+-- DROP TABLE public.modelo;
+
+CREATE TABLE public.modelo (
+	id serial4 NOT NULL,
+	marca varchar(255) NULL,
+	nome varchar(255) NULL,
+	CONSTRAINT modelo_pkey PRIMARY KEY (id)
+);
+
+
+-- public.municipio definition
+
+-- Drop table
+
+-- DROP TABLE public.municipio;
+
+CREATE TABLE public.municipio (
+	id int4 NOT NULL,
+	codigo_ibge int4 NULL,
+	nome varchar(255) NULL,
+	uf varchar(255) NULL,
+	CONSTRAINT municipio_pkey PRIMARY KEY (id)
+);
+
+
+-- public.pessoa definition
+
+-- Drop table
+
+-- DROP TABLE public.pessoa;
+
+CREATE TABLE public.pessoa (
+	id serial4 NOT NULL,
+	bairro varchar(255) NULL,
+	cep varchar(255) NULL,
+	cpf varchar(255) NULL,
+	endereco varchar(255) NULL,
+	enum_uf int4 NULL,
+	funcionario bool NOT NULL,
+	nome varchar(255) NULL,
+	telefone varchar(255) NULL,
+	whatsapp bool NOT NULL,
+	CONSTRAINT pessoa_pkey PRIMARY KEY (id)
+);
+
+
+-- public.produto definition
+
+-- Drop table
+
+-- DROP TABLE public.produto;
+
+CREATE TABLE public.produto (
+	id serial4 NOT NULL,
+	categoria int4 NOT NULL,
+	estoque_min int4 NOT NULL,
+	nome varchar(255) NULL,
+	preco_acusto numeric(19, 2) NULL,
+	preco_venda numeric(19, 2) NULL,
+	quantidade int4 NOT NULL,
+	CONSTRAINT produto_pkey PRIMARY KEY (id)
+);
+
+
+-- public.servico definition
+
+-- Drop table
+
+-- DROP TABLE public.servico;
+
+CREATE TABLE public.servico (
+	id serial4 NOT NULL,
+	nome varchar(255) NULL,
+	preco numeric(19, 2) NULL,
+	CONSTRAINT servico_pkey PRIMARY KEY (id)
+);
+
+
+-- public.veiculo definition
+
+-- Drop table
+
+-- DROP TABLE public.veiculo;
+
+CREATE TABLE public.veiculo (
+	id serial4 NOT NULL,
+	ano int4 NULL,
+	ano_modelo int4 NULL,
+	km int4 NULL,
+	placa varchar(255) NULL,
+	tipo varchar(255) NULL,
+	modelo_id int4 NULL,
+	proprietario_id int4 NULL,
+	CONSTRAINT veiculo_pkey PRIMARY KEY (id),
+	CONSTRAINT fkg66qhh2d26iq69v6fhhifnfu6 FOREIGN KEY (modelo_id) REFERENCES public.modelo(id),
+	CONSTRAINT fkgafaxs9mh3rj04eayqxhnscjk FOREIGN KEY (proprietario_id) REFERENCES public.pessoa(id)
+);
+
+
+-- public.ordem_servico definition
+
+-- Drop table
+
+-- DROP TABLE public.ordem_servico;
+
+CREATE TABLE public.ordem_servico (
+	id serial4 NOT NULL,
+	tipo varchar(255) NULL,
+	data_entrega timestamp NULL,
+	data_estimativa timestamp NULL,
+	data_inicio timestamp NULL,
+	data_orcamento timestamp NULL,
+	desconto numeric(19, 2) NULL,
+	tipo_ordem_servico int4 NULL,
+	cliente_id int4 NOT NULL,
+	funcionario_id int4 NOT NULL,
+	veiculo_id int4 NOT NULL,
+	CONSTRAINT ordem_servico_pkey PRIMARY KEY (id),
+	CONSTRAINT fkb8fh6wxe5f6w89x3ajkxsx02q FOREIGN KEY (funcionario_id) REFERENCES public.pessoa(id),
+	CONSTRAINT fkny45eyvfgf7oq36vfh3nsa6qe FOREIGN KEY (veiculo_id) REFERENCES public.veiculo(id),
+	CONSTRAINT fko61umlt6lewpqxx8sw0oiikiq FOREIGN KEY (cliente_id) REFERENCES public.pessoa(id)
+);
+
+
+-- public.ordem_servico_produto definition
+
+-- Drop table
+
+-- DROP TABLE public.ordem_servico_produto;
+
+CREATE TABLE public.ordem_servico_produto (
+	id serial4 NOT NULL,
+	preco numeric(19, 2) NULL,
+	quantidade int4 NULL,
+	produto_id int4 NOT NULL,
+	ordem_servico_id int4 NULL,
+	CONSTRAINT ordem_servico_produto_pkey PRIMARY KEY (id),
+	CONSTRAINT fk42cn5ekylojyns6kynb64ijv0 FOREIGN KEY (produto_id) REFERENCES public.produto(id),
+	CONSTRAINT fkroylow7egg32u6ba4yrlrh9r9 FOREIGN KEY (ordem_servico_id) REFERENCES public.ordem_servico(id)
+);
+
+
+-- public.ordem_servico_servico definition
+
+-- Drop table
+
+-- DROP TABLE public.ordem_servico_servico;
+
+CREATE TABLE public.ordem_servico_servico (
+	id serial4 NOT NULL,
+	preco numeric(19, 2) NULL,
+	quantidade int4 NULL,
+	servico_id int4 NOT NULL,
+	ordem_servico_id int4 NULL,
+	CONSTRAINT ordem_servico_servico_pkey PRIMARY KEY (id),
+	CONSTRAINT fkivhnhuvq8q99o8g2lejehdht6 FOREIGN KEY (ordem_servico_id) REFERENCES public.ordem_servico(id),
+	CONSTRAINT fkohty10a2qetqk30duwqtomojd FOREIGN KEY (servico_id) REFERENCES public.servico(id)
+);
