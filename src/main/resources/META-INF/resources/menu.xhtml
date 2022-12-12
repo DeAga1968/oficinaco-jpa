@@ -1,0 +1,36 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        <p:menubar>
+           
+                <p:menuitem value="Home" icon="pi pi-fw pi-home" outcome="home"/>    
+                <p:menuitem value="Cliente" icon="pi pi-fw pi-user" outcome="pessoa"/>              
+               
+          
+            
+            <p:submenu label="Serviço" icon="pi pi-fw pi-ticket">
+                <p:menuitem value="Nova O.S" icon="pi pi-fw pi-check-circle" outcome="ordem_servico"/>
+                <p:menuitem value="Listar O.S" icon="pi pi-fw pi-align-justify" outcome="ordem_servico_lista"/>
+                <p:menuitem value="Cadastrar Serviço" icon="pi pi-fw pi-cog" outcome="servico"/>
+            </p:submenu>
+            
+            <p:submenu label="Veículo" icon="pi pi-fw pi-car">
+            	<p:menuitem value="Cadastrar Modelo" icon="pi pi-fw pi-car" outcome="modelo"/>
+            	<p:menuitem value="Cadastrar Veículo" icon="pi pi-fw pi-car" outcome="veiculo"/>
+            </p:submenu>
+            
+             <p:submenu label="Estoque" icon="pi pi-fw pi-database">
+            	<p:menuitem value="Listar" icon="pi pi-fw pi-align-justify" outcome="produto"/>
+            	<p:menuitem value="Cadastrar Produto" icon="pi pi-fw pi-check-circle" outcome="produto"/>
+            	<p:menuitem value="Cadastrar Categoria" icon="pi pi-fw pi-check-circle" outcome="categoria"/>
+            </p:submenu>
+            
+           
+
+
+   
+        </p:menubar>	
+</ui:composition>

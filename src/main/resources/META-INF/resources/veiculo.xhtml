@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Oficinaco - Veiculos</title>
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<ui:include src="menu.xhtml" />
+		<h1 style="text-align: center">Cadastro de Veículos</h1>
+		<p:toolbar style="margin:20px 0px">
+	        <f:facet name="left">
+	            <p:commandButton value="Novo" type="button" icon="pi pi-external-link" onclick="PF('forms').show()"/>
+		
+	        </f:facet>
+	    </p:toolbar>
+		<p:dataTable id="lista" var="veiculo" value="#{veiculoControl.veiculos}"
+			allowUnsorting="true" sortMode="single">
+			<p:column sortBy="#{veiculo.id}" headerText="ID">
+				<h:outputText value="#{veiculo.id}" />
+			</p:column>
+			<p:column sortBy="#{veiculo.placa}" headerText="placa" filterBy="#{veiculo.placa}">
+				<h:outputText value="#{veiculo.placa}" />
+			</p:column>
+
+			<p:column headerText="Edição">
+				<p:commandButton icon="pi pi-pencil" update="form:veiculoDiag"
+					action="#{veiculoControl.setVeiculo(veiculo)}"
+					onclick="PF('forms').show()" value="Editar" />
+				<p:commandButton icon="pi pi-trash" update="form:lista"
+					action="#{veiculoControl.excluir(veiculo.id)}"
+					style="margin-left: 10px;" value="Excluir" />
+			</p:column>
+		</p:dataTable>
+		<p:dialog header="Veiculo" widgetVar="forms" minHeight="40" showEffect="fade" closeOnEscape="true" modal="true" height="185" width="1100">
+            <p:panelGrid id="veiculoDiag" columns="8">
+                <h:outputText value="Ano"/>
+                <p:inputText value="#{veiculoControl.veiculo.ano}"/>
+                <h:outputText value="Ano Modelo"/>
+                <p:inputText value="#{veiculoControl.veiculo.anoModelo}"/>
+                <h:outputText value="Quilometragem"/>
+                <p:inputText value="#{veiculoControl.veiculo.km}"/>
+                <h:outputText value="Placa"/>
+                <p:inputText value="#{veiculoControl.veiculo.placa}"/>
+                <h:outputLabel value="Tipo"/>
+                <h:selectOneMenu value="#{veiculoControl.veiculo.tipo}">
+                    <f:selectItem itemValue="U" itemLabel="Utilitário"/>
+                    <f:selectItem itemValue="H" itemLabel="Hatch"/>
+                    <f:selectItem itemValue="S" itemLabel="Sedan"/>
+                </h:selectOneMenu> 
+                <h:outputText value="Modelo"/>
+                <p:autoComplete id="modelo" value="#{veiculoControl.modeloId}" style="width: 100%"
+                                completeMethod="#{veiculoControl.completeModelo}"
+                                var="modelo" itemLabel="#{modelo}" itemValue="#{modelo.id}" forceSelection="true" scrollHeight="250"/>
+
+                <h:outputText value="Pessoa "/>
+                <p:autoComplete id="pessoa" value="#{veiculoControl.pessoaId}" style="width: 100%"
+                                completeMethod="#{veiculoControl.completePessoa}"
+                                var="pessoa" itemLabel="#{pessoa}" itemValue="#{pessoa.id}" forceSelection="true" scrollHeight="250"/>
+            </p:panelGrid>
+
+            <p:commandButton value="Salvar" action="#{veiculoControl.salvar}"  onclick="PF('forms').close()"/>
+
+        </p:dialog>
+
+	</h:form>
+</h:body>
+</html>

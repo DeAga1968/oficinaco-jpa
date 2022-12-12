@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>Cadastrar Serviço</title>
+</h:head>
+<h:body>
+	<h:form id="form">
+	
+        <ui:include src="menu.xhtml" />	
+        <h1 style="text-align: center">Cadastro de Serviços</h1>
+        
+        <p:commandButton value="Novo" type="button" icon="pi pi-external-link" onclick="PF('formulario').show()"/>
+
+		<p:dataTable id="lista" var="servico" value="#{servicoControl.servicos}" allowUnsorting="true" sortMode="single">
+			<p:column sortBy="#{servico.id}" headerText="Id">
+				<h:outputText value="#{servico.id}"/>
+			</p:column>
+			<p:column sortBy="#{servico.nome}" headerText="Nome" filterBy="#{servico.nome}">
+				<h:outputText value="#{servico.nome}"/>
+			</p:column>
+			<p:column sortBy="#{servico.preco}" headerText="Preço">
+				<h:outputText value="#{servico.preco}"/>
+			</p:column>
+			<p:column headerText="">
+				<p:commandButton icon="pi pi-pencil" update="form:servicoDiag" action="#{servicoControl.setServico(servico)}" onclick="PF('formulario').show()" value="Editar"/>
+				<p:commandButton icon="pi pi-trash" update="form:lista" action="#{servicoControl.excluir(servico.id)}" style="margin-left: 10px;" value="Excluir"/>
+			</p:column>
+		</p:dataTable>	    
+		
+		
+        
+		<p:dialog header="Serviço" widgetVar="formulario" minHeight="40" showEffect="fade" closeOnEscape="true">
+			<p:panelGrid id="servicoDiag" columns="2">
+				<h:outputText value="Nome:"/>
+				<p:inputText value="#{servicoControl.servico.nome}"/>
+				<h:outputText value="Preço"/>
+				<p:inputText value="#{servicoControl.servico.preco}"/>
+			</p:panelGrid>
+
+			<p:commandButton value="Salvar" action="#{servicoControl.salvar}" onclick="PF('formulario').close()"/>
+			
+		</p:dialog> 
+		
+		     
+
+	</h:form>
+</h:body>
+</html>

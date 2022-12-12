@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>Cadastrar Produtos</title>
+</h:head>
+<h:body>
+	<h:form id="form">
+	
+        <ui:include src="menu.xhtml" />	
+        
+        <p:commandButton value="Novo" type="button" icon="pi pi-external-link" onclick="PF('formulario').show()"/>
+
+		<p:dataTable id="lista" var="produto" value="#{produtoControl.produtos}" allowUnsorting="true" sortMode="single">
+			<p:column sortBy="#{produto.id}" headerText="Id">
+				<h:outputText value="#{produto.id}"/>
+			</p:column>
+			<p:column sortBy="#{produto.nome}" headerText="Nome">
+				<h:outputText value="#{produto.nome}"/>
+			</p:column>
+			<p:column sortBy="#{produto.preco_venda}" headerText="Preço">
+				<h:outputText value="#{produto.preco_venda}"/>
+			</p:column>
+			<p:column headerText="">
+				<p:commandButton icon="pi pi-pencil" update="form:produtoDiag" action="#{produtoControl.setProduto(produto)}" onclick="PF('formulario').show()" value="Editar"/>
+				<p:commandButton icon="pi pi-trash" update="form:lista" action="#{produtoControl.excluir(servico.id)}" style="margin-left: 10px;" value="Excluir"/>
+			</p:column>
+		</p:dataTable>	    
+		
+		
+        
+		<p:dialog header="Produto" widgetVar="formulario" minHeight="40" showEffect="fade" closeOnEscape="true">
+			<p:panelGrid id="produtoDiag" columns="2">
+				<h:outputText value="Nome:"/>
+				<p:inputText value="#{produtoControl.produto.nome}"/>
+				<h:outputText value="Preço:"/>
+				<p:inputText value="#{produtoControl.produto.preco_venda}"/>
+			</p:panelGrid>
+
+			<p:commandButton value="Salvar" action="#{produtoControl.salvar}" onclick="PF('formulario').close()"/>
+			
+		</p:dialog> 
+		
+		     
+
+	</h:form>
+</h:body>
+</html>

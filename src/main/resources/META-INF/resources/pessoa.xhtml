@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Gestão de Clientes</title>
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<ui:include src="menu.xhtml" />
+		<h1 style="text-align: center">Cadastro de Pessoa</h1>
+		<p:toolbar style="margin:20px 0px">
+	        <f:facet name="left">
+	            <p:commandButton value="Novo" type="button" icon="pi pi-external-link" onclick="PF('forms').show()"/>
+		
+	        </f:facet>
+	    </p:toolbar>
+	   
+		<p:dataTable id="lista" var="pessoa" value="#{pessoaControl.pessoas}"
+			allowUnsorting="true" sortMode="single">
+			<p:column sortBy="#{pessoa.id}" headerText="ID">
+				<h:outputText value="#{pessoa.id}" />
+			</p:column>
+			<p:column sortBy="#{pessoa.nome}" headerText="Nome" filterBy="#{pessoa.nome}">
+				<h:outputText value="#{pessoa.nome}" />
+			</p:column>
+			<p:column sortBy="#{pessoa.cpf}" headerText="CPF">
+				<h:outputText value="#{pessoa.cpf}" />
+			</p:column>
+															<p:column sortBy="#{pessoa.enumUf}" headerText="UF">
+																<h:outputText value="#{pessoa.enumUf}" />
+															</p:column>
+
+			<p:column headerText="Edição">
+				<p:commandButton icon="pi pi-pencil" update="form:pessoaUpDiag"
+					action="#{pessoaControl.setPessoa(pessoa)}"
+					onclick="PF('forms').show()" value="Editar" />
+				<p:commandButton icon="pi pi-trash" update="form:lista"
+					action="#{pessoaControl.excluir(pessoa.id)}"
+					style="margin-left: 10px;" value="Excluir" />
+			</p:column>
+		</p:dataTable>
+		
+		<p:dialog header="Informações" widgetVar="forms" minHeight="40"
+			showEffect="fade" closeOnEscape="true">
+
+			<p:panelGrid id="pessoaUpDiag" columns="8">
+
+				<h:outputText value="Nome" />
+				<p:inputText value="#{pessoaControl.pessoa.nome}" />
+				<h:outputText value="CPF" />
+			        <p:inputText value="#{pessoaControl.pessoa.cpf}"
+				id="dadd"></p:inputText>
+				<h:outputText value="Endereço" />
+				<p:inputText value="#{pessoaControl.pessoa.endereco}" />
+				<h:outputText value="CEP" />
+				<p:inputText value="#{pessoaControl.pessoa.cep}" />
+				<h:outputText value="UF" />
+				<p:selectOneMenu value="#{pessoaControl.pessoa.enumUf}" filter="true">
+					<f:selectItems value="#{pessoaControl.enumUfs}" var="a" itemValue="#{a}" itemLabel="#{a.descricao}"/>
+				</p:selectOneMenu>
+				<p:outputLabel value="#{pessoaControl.pessoa.enumUf.descricao}" id="Label"/>
+				<h:outputText value="Bairro" />
+				<p:inputText value="#{pessoaControl.pessoa.bairro}" />
+				<h:outputText value="Telefone" />
+				<p:inputText value="#{pessoaControl.pessoa.telefone}" />
+				<h:outputText value="É Whatsapp?" />
+				<p:selectBooleanCheckbox value="#{pessoaControl.pessoa.whatsapp}" />
+				<h:outputText value="Funcionário?" />
+				<p:selectBooleanCheckbox value="#{pessoaControl.pessoa.funcionario}" />
+
+			</p:panelGrid>
+
+			<p:commandButton value="Salvar" action="#{pessoaControl.salvar}"
+				onclick="PF('forms').close()" />
+
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Produtos</title>
+</h:head>
+<h:body>	
+	<h:form id="form" method="post" enctype="multipart/form-data">
+	
+        <ui:include src="menu.xhtml" />	
+        <h1 style="text-align: center">Cadastro de Produtos</h1>
+        <p:toolbar style="margin:20px 0px">
+	        <f:facet name="left">
+	            <p:commandButton value="Novo" type="button" icon="pi pi-external-link" onclick="PF('formulario').show()"/>
+		
+	        </f:facet>
+	 
+	        
+	    </p:toolbar>
+		<p:dataTable id="lista" var="produto" value="#{produtoControl.produtos}" allowUnsorting="true" sortMode="single">
+			<p:column headerText="Foto">
+				<p:graphicImage url="./img/${modelo.logo}"/> 
+			</p:column>
+			<p:column sortBy="#{produto.id}" headerText="Id">
+				<h:outputText value="#{produto.id}"/>
+			</p:column>
+			<p:column sortBy="#{produto.nome}" headerText="Produto" filterBy="#{produto.nome}">
+				<h:outputText value="#{produto.nome}"/>
+			</p:column>
+			<p:column sortBy="#{produto.preco_venda}" headerText="Preço">
+				<h:outputText value="#{produto.precoVenda}"/>
+			</p:column>
+			<p:column headerText="">
+				<p:commandButton icon="pi pi-pencil" update="form:modeloDiag" action="#{produtoControl.setProduto(produto)}" onclick="PF('formulario').show()" value="Editar"/>
+				<p:commandButton icon="pi pi-trash" update="form:lista" action="#{produtoControl.excluir(produto.id)}" style="margin-left: 10px;" value="Excluir"/>
+			</p:column>
+		</p:dataTable>	    
+		
+		
+        
+		<p:dialog header="Modelo" widgetVar="formulario" minHeight="40" showEffect="fade" closeOnEscape="true">
+			<p:panelGrid id="modeloDiag" columns="2">
+				<h:outputText value="Nome:"/>
+				<p:inputText value="#{produtoControl.produto.nome}"/>
+				<h:outputText value="Preço:"/>
+				<p:inputText value="#{produtoControl.produto.precoVenda}"/>
+				<h:outputText value="Preço (ACusto):"/>
+				<p:inputText value="#{produtoControl.produto.precoAcusto}"/>
+				<h:outputText value="Categoria:"/>
+				<p:inputText value="#{produtoControl.produto.categoria}"/>
+				<h:outputText value="Estoque:"/>
+				<p:spinner id="qtdEstoque" min="0" value="#{produtoControl.produto.quantidade}" />
+				<h:outputText value="Estoque (min):"/>
+				<p:spinner id="qtdEstoqueMin" min="0" value="#{produtoControl.produto.estoqueMin}" />
+			</p:panelGrid>
+
+			<p:commandButton value="Salvar" action="#{produtoControl.salvar}" onclick="PF('formulario').close()"/>
+			
+		</p:dialog> 
+		
+		   	
+	</h:form>
+</h:body>
+</html>
